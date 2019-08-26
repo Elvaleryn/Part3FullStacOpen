@@ -70,12 +70,13 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
     const body = req.body
-
+    
     const person = {
         name: body.name,
         number: body.number,
-        id: generateId(),
+        id: generateId()
     }
+
 
     if (!body.name) {
         return res.status(400).json({
@@ -85,16 +86,16 @@ app.post("/api/persons", (req, res) => {
         return res.status(400).json({
             error: "Please enter a number"
         })
-    } else if (body.name === person.name) {
+    } else if (persons.map(p => p.name) === body.name) {
         return res.status(400).json({
             error: "Name is equal, change it"
         })
     }
     persons = persons.concat(person)
-    console.log(method);
-
 
     res.json(person)
+
+
 
 })
 

@@ -1,7 +1,7 @@
-POST  http://localhost:3001/
+POST  http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "different",
+    "name": "bsdfbgg",
     "number": "5435345"
 }
