@@ -5,9 +5,8 @@ const morgan = require('morgan')
 const cors = require("cors")
 
 app.use(cors())
-app.use(express.static('build'))
-
 app.use(bodyParser.json())
+app.use(express.static('build'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
 
 morgan.token('type', function (request, response) {
@@ -91,11 +90,12 @@ app.post("/api/persons", (req, res) => {
             error: "Name is equal, change it"
         })
     }
-
-
     persons = persons.concat(person)
     console.log(method);
+
+
     res.json(person)
+
 })
 
 
