@@ -96,6 +96,7 @@ app.post("/api/persons", (req, res) => {
     res.json(person)
 })
 
+app.use(express.static('build'))
 
 
 
