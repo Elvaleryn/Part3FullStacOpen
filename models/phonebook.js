@@ -1,25 +1,24 @@
-const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator');
-mongoose.connect(config.DB,{ useMongoClient:true });
+const mongoose = require("mongoose")
+const uniqueValidator = require("mongoose-unique-validator")
 
 const url = process.env.MONGODB_URI
-console.log('connecting to database')
+console.log("connecting to database")
 mongoose.connect(url, {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useCreateIndex: true
-    })
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+})
     .then(result => {
-        console.log('connected to MongoDB')
+        console.log("connected to MongoDB")
     }).catch((error) => {
-        console.log('error connecting to MongoDB:', error.message)
+        console.log("error connecting to MongoDB:", error.message)
     })
 const personSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true, minlength: 3 },
-    number: { type: String, required: true, unique: true, minlength: 8},
+    number: { type: String, required: true, unique: true, minlength: 8 },
 })
-personSchema.plugin(uniqueValidator);
-personSchema.set('toJSON', {
+personSchema.plugin(uniqueValidator)
+personSchema.set("toJSON", {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
@@ -27,6 +26,6 @@ personSchema.set('toJSON', {
     }
 })
 
-mongoose.set('useFindAndModify', false)
+mongoose.set("useFindAndModify", false)
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = mongoose.model("Person", personSchema)

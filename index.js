@@ -1,24 +1,24 @@
-require('dotenv').config()
-const express = require('express')
+require("dotenv").config()
+const express = require("express")
 const app = express()
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
+const bodyParser = require("body-parser")
+const morgan = require("morgan")
 const cors = require("cors")
-const Person = require('./models/phonebook')
+const Person = require("./models/phonebook")
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(express.static('build'))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
+app.use(express.static("build"))
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :type"))
 
-morgan.token('type', function (request, response) {
+morgan.token("type", function (request, response) {
     return JSON.stringify(request.body)
 })
 
 
 // const generateId = () => Math.floor(Math.random(...persons.map(p => p.id)) * 10000000) + 4
 
-app.get('/api/persons', (request, response) => {
+app.get("/api/persons", (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons.map(person => person.toJSON()))
     })
@@ -65,12 +65,12 @@ app.post("/api/persons", (req, res, next) => {
     const body = req.body
     if (body.name === "") {
         return response.status(400).json({
-            error: 'content missing'
+            error: "content missing"
         })
     }
     if (body.number === "") {
         return response.status(400).json({
-            error: 'content missing'
+            error: "content missing"
         })
     }
 
@@ -83,7 +83,7 @@ app.post("/api/persons", (req, res, next) => {
     person.save().then(savedPerson => {
         res.json(savedPerson.toJSON())
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
     // if (!body.name) {
     //     return res.status(400).json({
     //         error: "Please Enter a Name"
@@ -110,12 +110,12 @@ app.put("/api/persons/:id", (request, response, next) => {
     }
 
     Person.findOneAndUpdate({
-            _id: request.params.id
-        }, person, {
-            new: true,
-            runValidators: true,
-            context: 'query'
-        })
+        _id: request.params.id
+    }, person, {
+        new: true,
+        runValidators: true,
+        context: "query"
+    })
         .then(updatedPerson => {
             response.json(updatedPerson.toJSON())
         })
@@ -124,7 +124,7 @@ app.put("/api/persons/:id", (request, response, next) => {
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({
-        error: 'unknown endpoint'
+        error: "unknown endpoint"
     })
 }
 
@@ -133,13 +133,13 @@ app.use(unknownEndpoint)
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
 
-    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
         return response.status(400).send({
-            error: 'malformatted id'
+            error: "malformatted id"
         })
-    } else if (error.name === 'ValidationError') {
+    } else if (error.name === "ValidationError") {
         return response.status(400).send({ error: error.message })
-    }  else if (error.name === 'TypeError') {
+    }  else if (error.name === "TypeError") {
         return response.status(400).send({ error: error.message })
     }
 
